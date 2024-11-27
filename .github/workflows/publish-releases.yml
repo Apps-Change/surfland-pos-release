@@ -28,11 +28,22 @@ jobs:
             echo "" >> release-pages/index.md
           done
 
+      - name: Verify contents of release-pages
+        run: |
+          echo "Listing contents of release-pages folder:"
+          ls -l release-pages
+
       - name: Deploy release info to public GitHub Pages repo
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_dir: './release-pages'
-          destination_dir: 'docs'
-          destination_branch: main
-          destination_repo: Apps-Change/surfland-pos-release
+          destination_dir: 'docs'  # Publique na pasta docs
+          destination_branch: main  # Use a branch principal para publicar no GitHub Pages
+          destination_repo: Apps-Change/surfland-pos-release  # Repositório público
+
+      - name: Verify files in the target repository
+        run: |
+          echo "Listing contents of the destination repository after deployment:"
+          git clone --depth=1 https://github.com/Apps-Change/surfland-pos-release.git
+          ls -l surfland-pos-release/docs  # Verifique se os arquivos foram enviados corretamente para a pasta docs
