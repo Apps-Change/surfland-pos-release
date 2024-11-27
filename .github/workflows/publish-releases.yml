@@ -33,5 +33,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_dir: './release-pages'
-          destination_branch: gh-pages  
+          destination_dir: 'docs'
+          destination_branch: main
           destination_repo: Apps-Change/surfland-pos-release
