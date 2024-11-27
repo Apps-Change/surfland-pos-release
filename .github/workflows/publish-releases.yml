@@ -19,13 +19,13 @@ jobs:
       - name: Generate release info
         run: |
           mkdir release-pages
-          echo "# Releases" > release-pages/index.md
-          echo "" >> release-pages/index.md
+          echo "# Releases" > release-pages/releases.md
+          echo "" >> release-pages/releases.md
           
           for release in $(curl -s https://api.github.com/repos/Apps-Change/surfland-pos/releases | jq -r '.[].name'); do
-            echo "## $release" >> release-pages/index.md
-            echo "Release description and info" >> release-pages/index.md
-            echo "" >> release-pages/index.md
+            echo "## $release" >> release-pages/releases.md
+            echo "Release description and info" >> release-pages/releases.md
+            echo "" >> release-pages/releases.md
           done
 
       - name: Verify contents of release-pages
