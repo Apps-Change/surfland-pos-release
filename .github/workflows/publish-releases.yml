@@ -1,0 +1,36 @@
+name: Publish Releases to GitHub Pages
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out private repository
+        uses: actions/checkout@v2
+        with:
+          repository: Apps-Change/surfland-pos
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate release info
+        run: |
+          mkdir release-pages
+          echo "# Releases" > release-pages/releases.md
+          echo "" >> release-pages/releases.md
+          
+          for release in $(curl -s https://api.github.com/repos/Apps-Change/surfland-pos/releases | jq -r '.[].name'); do
+            echo "## $release" >> release-pages/releases.md
+            echo "Release description and info" >> release-pages/releases.md
+            echo "" >> release-pages/releases.md
+          done
+
+      - name: Deploy release info to public GitHub Pages repo
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_dir: './release-pages'
+          destination_branch: gh-pages  
+          destination_repo: Apps-Change/surfland-pos-release
